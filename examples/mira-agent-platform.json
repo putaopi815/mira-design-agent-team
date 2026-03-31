@@ -1,0 +1,18 @@
+{
+  "title": "Mira AI Agent Orchestration Platform",
+  "description": "Mira is an AI Agent orchestration platform that allows users to create, configure, and manage teams of AI agents. Users can define agent roles, set up workflows, and monitor agent execution in real-time.\n\nCore features:\n- Creating and configuring individual AI agents with specific roles and capabilities\n- Building multi-agent workflows with visual drag-and-drop\n- Real-time monitoring of agent execution with streaming output\n- Conversation interface for interacting with agent teams\n- Template library for common agent team configurations\n- History and analytics of agent team executions\n- Agent performance evaluation and optimization suggestions",
+  "targetUsers": "Product managers, developers, and business analysts who want to automate complex workflows using AI agent teams. They range from technical users who build agent workflows from scratch to non-technical users who use templates.",
+  "platforms": ["web"],
+  "constraints": [
+    "Must support real-time streaming of agent outputs",
+    "Must handle multiple concurrent agent executions",
+    "Must provide clear visibility into agent decision-making process",
+    "Must support Pencil design tool integration via MCP"
+  ],
+  "references": [
+    "ChatGPT - conversational AI interface patterns",
+    "Cursor - AI-assisted coding workflow",
+    "Zapier - workflow automation UX",
+    "n8n - visual workflow builder"
+  ]
+}

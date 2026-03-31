@@ -1,0 +1,9 @@
+export { PRODUCT_ANALYST_PROMPT } from "./product-analyst";
+export { UX_RESEARCHER_PROMPT } from "./ux-researcher";
+export { INFO_ARCHITECT_PROMPT } from "./info-architect";
+export { CONVERSATION_DESIGNER_PROMPT } from "./conversation-designer";
+export { AI_UX_SPECIALIST_PROMPT } from "./ai-ux-specialist";
+export { INTERACTION_DESIGNER_PROMPT } from "./interaction-designer";
+export { UI_DESIGNER_PROMPT } from "./ui-designer";
+export { DESIGN_REVIEWER_PROMPT } from "./design-reviewer";
+export { ORCHESTRATOR_PROMPT } from "./orchestrator";
