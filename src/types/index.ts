@@ -498,6 +498,7 @@ export interface UIPageState {
   stateName: string;
   description: string;
   pencilFrameId?: string; // Pencil 中的 frame ID
+  pencilScript?: string; // Pencil batch_design 脚本
 }
 
 export interface PencilCommand {

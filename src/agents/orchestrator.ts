@@ -1,4 +1,5 @@
 import { runAgent, runAgentsParallel } from "./base-agent";
+import { executePencilDesign, getPencilContext } from "./pencil-executor";
 import {
   ProductRequirement,
   ProductAnalysisOutput,
@@ -183,13 +184,28 @@ ${JSON.stringify(aiuxDesign, null, 2)}`
   // ============================================
   logPhase(5, "Visual Execution — UI Designer (Pencil MCP)");
 
+  // Step 5a: Fetch Pencil editor context (components, variables, guidelines)
+  logInfo("Fetching Pencil editor context...");
+  const pencilContext = await getPencilContext();
+
+  // Step 5b: Generate Pencil batch_design scripts via UI Designer Agent
   const uiResult = await runAgent<UIDesignOutput>(
     {
       name: "UIDesigner",
       systemPrompt: UI_DESIGNER_PROMPT,
       maxTokens: 8192,
     },
-    `Create high-fidelity UI designs based on interaction specifications:
+    `Create high-fidelity UI designs based on interaction specifications.
+
+## Pencil Editor Context
+### Available Components
+${pencilContext.components}
+
+### Design Tokens (Variables)
+${pencilContext.variables}
+
+### Web App Guidelines
+${pencilContext.guidelines}
 
 ## Interaction Design
 ${JSON.stringify(interactionDesign, null, 2)}
@@ -203,12 +219,38 @@ ${JSON.stringify(aiuxDesign, null, 2)}
 ## Conversation Design
 ${JSON.stringify(conversationDesign, null, 2)}
 
-Note: Use Pencil MCP to read the component library and create designs.`
+Generate batch_design scripts for each page. Use components from the Pencil Library via ref.
+Use $variable tokens for all colors and typography. Max 25 operations per script.`
   );
 
   assertSuccess(uiResult);
   let uiDesign = uiResult.output as UIDesignOutput;
   logInfo(`UI Designer: ${uiDesign.pages?.length || 0} pages designed`);
+
+  // Step 5c: Execute Pencil batch_design scripts via MCP
+  if (uiDesign.pages && uiDesign.pages.length > 0) {
+    const scripts = uiDesign.pages.flatMap((page) =>
+      page.states
+        .filter((state) => state.pencilScript)
+        .map((state) => ({
+          pageName: `${page.pageName} - ${state.stateName}`,
+          script: state.pencilScript || state.description,
+        }))
+    );
+
+    if (scripts.length > 0) {
+      logInfo(`Executing ${scripts.length} Pencil design scripts...`);
+      const pencilResult = await executePencilDesign(
+        scripts,
+        JSON.stringify(interactionDesign, null, 2)
+      );
+      logInfo(
+        `Pencil execution: ${pencilResult.pagesCreated} pages created, ${pencilResult.errors.length} errors`
+      );
+    } else {
+      logInfo("No Pencil scripts generated — UI designs are in JSON format only");
+    }
+  }
 
   // ============================================
   // Phase 6: Review + Iteration
