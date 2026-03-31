@@ -7,7 +7,7 @@
 在此项目目录中运行 Claude Code，然后输入：
 
 ```
-/agent orchestrator
+/agent mira-design-team
 
 需求：[你的产品需求描述]
 ```
