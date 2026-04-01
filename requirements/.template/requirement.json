@@ -1,0 +1,8 @@
+{
+  "title": "需求标题",
+  "description": "详细需求描述",
+  "targetUsers": "目标用户",
+  "platforms": ["web"],
+  "constraints": [],
+  "references": []
+}
